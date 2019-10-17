@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Bootstrap Dashboard by Bootstrapious.com</title>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="all,follow" />
+<!-- Bootstrap CSS-->
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<!-- Google fonts - Roboto -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Poppins:300,400,800" />
+
+<link rel="stylesheet" href="css/bootstrapDataTables.css" />
+<link rel="stylesheet" href="css/datatableCss2.css" />
+
+<!-- theme stylesheet-->
+<link rel="stylesheet" href="css/style.default.css"
+	id="theme-stylesheet" />
+<!-- Custom stylesheet - for your changes-->
+<link rel="stylesheet" href="css/custom.css" />
+<!-- Favicon-->
+<link rel="shortcut icon" href="img/favicon.ico" />
+<!-- Font Awesome CDN-->
+<!-- you can replace it by local Font Awesome-->
+<script src="https://use.fontawesome.com/99347ac47f.js"></script>
+<!-- Font Icons CSS-->
+<link rel="stylesheet"
+	href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css" />
+<!-- Tweaks for older IEs-->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+        <script src="js/jspdf.min.js"></script>
+</head>
+<body>
+	<div class="page home-page">
+		<!-- Main Navbar-->
+		<header class="header">
+			<nav class="navbar" style="background-color: #d61a0c">
+				<!-- Search Box-->
+				<div class="search-box">
+					<button class="dismiss">
+						<i class="icon-close"></i>
+					</button>
+					<form id="searchForm" action="#" role="search">
+						<input type="search" placeholder="What are you looking for..."
+							class="form-control" />
+					</form>
+				</div>
+				<div class="container-fluid">
+					<div
+						class="navbar-holder d-flex align-items-center justify-content-between">
+						<!-- Navbar Header-->
+						<div class="navbar-header">
+							<!-- Navbar Brand -->
+							<a href="index.html" class="navbar-brand">
+								<div class="brand-text brand-big hidden-lg-down">
+									<strong><span>Credit Bureau Search </span></strong>
+								</div>
+								<div class="brand-text brand-small">
+									<strong>CRMS</strong>
+								</div>
+							</a>
+							<!-- Toggle Button-->
+							<a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+						</div>
+						<!-- Navbar Menu -->
+						<ul
+							class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+							<li class="nav-item"><a href="login.html"
+								class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<div class="page-content d-flex align-items-stretch "
+			style="background-color: white;">
+			<!-- Side Navbar -->
+			<nav class="side-navbar" th:include="app::side-nav"></nav>
+			<div class="col-lg-10" style="margin: auto;">
+				<!-- Page Header-->
+				<header class="page-header">
+					<div class="container-fluid">
+						<h2 class="no-margin-bottom">Check Request Status</h2>
+					</div>
+				</header>
+
+				<div class="card page-content d-flex align-items-stretch">
+
+					<br></br>
+
+
+					<div class="">
+
+						<div>
+							<!-- Page Header-->
+
+
+							<p></p>
+
+							<div>
+								<form th:action="@{/checkStatus}" th:object="${customerInfo}"
+									method="post">
+									<div class="card-body form-inline">
+
+										<div class="form-group">
+
+											Status: <select name="ID type" th:field="*{formStatus}"
+												class="mx-sm-3 form-control">
+
+												<option value="All">All</option>
+												<option value="New Request">New Request</option>
+												<option value="Rejected">Rejected</option>
+												<option value="Updated">Updated</option>
+												<option value="CRN">Credit Ref No.</option>
+												<option value="RRN">Request Ref No.</option>
+											</select>
+										</div>
+										<div class="form-group">
+
+											Account Number: <input type="text" th:field="*{accountNo}"
+												class="mx-sm-3 form-control form-control" />
+										</div>
+										<div class="form-group">
+											<input type="submit" value="Submit"
+												class="mx-sm-3 btn btn-primary"
+												style="background-color: #434141" />
+										</div>
+
+									</div>
+								</form>
+
+								<div>
+
+
+									<div class="card-header d-flex align-items-center">
+										<h3 class="h4">Request Status</h3>
+									</div>
+									<br></br>
+									<div
+										style="overflow: auto;; width: 100%; margin: 0px !important; table-layout: fixed;"
+										class="card">
+										<br></br>
+										<table id="custData" class="table table-striped" cellspacing="0" width="100%">
+											<thead>
+												<tr style="font-size: 13.5px">
+													<th>S/N</th>
+													<th>Request Ref</th>
+													<th>CRN NO</th>
+													<th>Account No</th>
+													<th>Account Name</th>
+													<th>CRMS Type</th>
+													<th>Date Created</th>
+													<th>Created By</th>
+													<th>Status</th>
+													<th>Action</th>
+
+
+												</tr>
+
+											</thead>
+											<tbody>
+												<tr th:each="var, sn : ${customerInfoList}"
+													style="font-size: 12px; white-space:nowrap;" id="result-content" >
+													<td th:text="${sn.count}"></td>
+													<td id="requestID" th:text="${var.requestReference}"></td>
+													<td th:text="${var.creditRefNo}"></td>
+													<td th:text="${var.accountNo}"></td>
+													<td style="white-space: nowrap"
+														th:text="${var.borrowerFullname}"></td>
+													<td th:text="${var.crmsType}"></td>
+													<td th:text="${var.createDate}"></td>
+													<td th:text="${var.createdBy}"></td>
+
+													<td th:text="${var.status}"><span></span></td>
+
+							<td data-th-id="${var.id}" th:if="${var.status.name() =='N'}" style="white-space: nowrap">
+							
+							<a href="#"  class=" view-detail-btn">Explode</a>
+
+							 <!--  | -->
+							 
+							<!-- <a id="modify" data-toggle="modal" data-target="#modify" href=""	th:onclick="'javascript:modify(\'' + ${var.id} + '\');'">Modify</a> -->
+							
+							</td>
+
+													
+													
+							<td data-th-id="${var.id}" style="white-space: nowrap" th:if="${var.status.name() =='U'}">
+							
+							<a href="#"  class=" view-detail-btn">Explode</a>													
+													
+							</td>
+													
+													
+							<td data-th-id="${var.id}" style="white-space: nowrap" th:if="${var.status.name() =='R'}"> 
+													
+							<a href="#"  class=" view-detail-btn">Explode</a>
+													
+							</td>
+
+
+
+
+												</tr>
+
+											</tbody>
+										</table>
+
+
+				<div id="crms-detail-modal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Crms Detail</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-11 mx-auto">
+                                        <table class="table table-striped info-table">
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row hidden reject-reason-container">
+                                    <div class="col-lg-11 mx-auto">
+                                        <div class="form-group">
+                                            <label for="reject-reason">Reject Reason</label>
+                                            <textarea name="" class="w-100 p-3" id="reject-reason" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="modal-footer">
+                          <button id="cmd" type="button" class="btn btn-secondary" >Download</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="selected-row-val" value=""/>
+            <input type="hidden" id="selected-row-id" value=""/>
+          
+            
+        </div>
+    </div>
+
+
+
+
+
+
+
+									</div>
+
+									<div id="modify" role="dialog"
+										aria-labelledby="exampleModalLabel" aria-hidden="true"
+										class="modal fade text-left ">
+										<div role="document" class="modal-dialog modal-lg">
+											<div class="modal-content">
+
+												<div class="modal-header">
+													<h4 id="exampleModalLabel" class="modal-title">
+														CRMS Request Information For <span id="custNameHead"></span>
+													</h4>
+													<button type="button" data-dismiss="modal"
+														aria-label="Close" class="close">
+														<span aria-hidden="true">×</span>
+													</button>
+												</div>
+												<div class="modal-body">
+
+													<form>
+														<div class="col-lg-12"
+															style="margin: auto; padding: 10px; font-size: 15px">
+
+
+															<br></br>
+
+															<div class="form-group row">
+
+
+
+
+																<div class="col-md-12">
+																	<div class="row">
+
+																		<div class="col-md-3">
+																			<label>Request ID</label>
+																			<p id="reqID"></p>
+																		</div>
+
+																		<div class="col-md-6">
+																			<label>Requested By</label>
+																			<p id="requester"></p>
+																		</div>
+
+																		<div class="col-md-3">
+																			<label>CRMS Type</label>
+																			<p id="crmsType"></p>
+																		</div>
+
+																	</div>
+																</div>
+
+
+
+
+
+																<div class="col-md-12">
+																	<div class="row">
+
+																		<div class="col-md-4 ">
+																			<label>Customer Name</label>
+																			<p id="custName"></p>
+																		</div>
+
+																		<div class="col-md-4">
+																			<label>Account Number</label>
+																			<p id="acctNumber"></p>
+																		</div>
+
+																		<div class="col-md-4">
+																			<label>Credit Type</label>
+																			<p id="creditType"></p>
+																		</div>
+
+																	</div>
+																</div>
+															</div>
+
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Legal Status</label>
+																			<p id="legalStatus"></p>
+																		</div>
+
+
+																		<div class="col-md-4">
+																			<label>Credit Purpose By Business Lines</label>
+																			<p id="cpbLines"></p>
+																		</div>
+
+																		<div class="col-md-4">
+																			<label>Business Line Sub-Sector</label>
+																			<p id="blSubSector"></p>
+																		</div>
+
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Credit Limit</label>
+																			<p id="creditLimit"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Outstanding Amount</label>
+																			<p id="outstandingAmt"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Fee Type </label>
+																			<p id="feeType"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Fee Amount</label>
+																			<p id="feeAmt"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Effective Date</label>
+																			<p id="effectiveDate"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Expiry Date</label>
+																			<p id="expiryDate"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Tenor </label>
+																			<p id="tenor"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Repayment Agreement Mode</label>
+																			<p id="repaymentMode"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Beneficiary Account Number</label>
+																			<p id="benAcct"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Location of Beneficiary</label>
+																			<p id="locationBen"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Relationship Type</label>
+																			<p id="relType"></p>
+																		</div>
+
+																		<div class="col-md-4">
+																			<label>Company Size</label>
+																			<p id="size"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Funding Source Category</label>
+																			<p id="sourceCat"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Funding Source</label>
+																			<p id="source"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Classification by Business Line</label>
+																			<p id="classBLine"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Classification by Business Line
+																				sub-sector</label>
+																			<p id="classBlineSect"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Specialized Loan</label>
+																			<p id="specializedLoan"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Specialized Loan Period (in months)</label>
+																			<p id="period"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Interest Rate</label>
+																			<p id="interestRate"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Collateral Present</label>
+																			<p id="collateralPresnt"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Collateral Secure</label>
+																			<p id="collateralSecure"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Security Type</label>
+																			<p id="secureType"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Address of Security</label>
+																			<p id="addSecure"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Owner of Security</label>
+																			<p id="ownerSecure"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Unique Identification Type of Security
+																				Owner</label>
+																			<p id="uniqueIdType"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Unique Identifier of Security Owner</label>
+																			<p id="uniqueIdOwner"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Guarantee</label>
+																			<p id="guarantee"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-4">
+																			<label>Guarantee Type</label>
+																			<p id="guaranteeType"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Guarantor Unique Identification Type</label>
+																			<p id="guarantorUniqueIdType"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Guarantor Unique Id</label>
+																			<p id="guarantorUniqueId"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+
+															<div class="form-group row">
+
+																<div class="col-md-12">
+																	<div class="row">
+																		<div class="col-md-3">
+																			<label>Amount Guaranteed</label>
+																			<p id="amountGuaranteed"></p>
+																		</div>
+																		<div class="col-md-2">
+																			<label>Syndication</label>
+																			<p id="syndication"></p>
+																		</div>
+																		<div class="col-md-4">
+																			<label>Syndication Status</label>
+																			<p id="syndicationStatus"></p>
+																		</div>
+																		<div class="col-md-3">
+																			<label>Syndication Reference No.</label>
+																			<p id="syndicationRefNo"></p>
+																		</div>
+
+																		<div class="col-md-3">
+																			<label>Request Status</label>
+																			<p id="status"></p>
+																		</div>
+																		<div class="col-md-3">
+																			<label>Credit Ref No.</label>
+																			<p id="crnNo"></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+
+
+
+														</div>
+														<div class="form-group">
+															<input type="submit" value="Signin"
+																class="btn btn-primary" />
+														</div>
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" data-dismiss="modal"
+														class="btn btn-secondary">Close</button>
+													<button type="button" class="btn btn-primary">Save
+														changes</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+
+								</div>
+
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+				<footer class="main-footer">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-6">
+								<p>Your company &copy; 2017-2019</p>
+							</div>
+							<div class="col-sm-6 text-right">
+								<p>
+									Design by <a href="https://bootstrapious.com/admin-templates"
+										class="external">Bootstrapious</a>
+								</p>
+								<!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+
+
+
+			<!-- Page Footer-->
+
+		</div>
+		<div th:include="app::footer-assets"></div>
+		
+	</div>
+
+	<!-- Javascript files-->
+
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="js/jquery.js"></script>
+
+	<script src="js/jqueryDataTables.js"></script>
+	<script src="js/bootstrapDataTables.js"></script>
+
+
+	<script src="js/tether.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.cookie.js">
+	
+
+	</script>
+
+
+	<script src="js/jquery.validate.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+	<script src="js/front.js"></script>
+
+	<script src="js/datatablefuntion.js"></script>
+	
+	<script>
+	
+	
+	</script>
+
+</body>
+</html>

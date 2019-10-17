@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head th:include="app::head ('Download Request')">
+</head>
+<body>
+<div class="page form-page">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar" style="background-color: #d61a0c ">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand">
+                        <div class="brand-text brand-big hidden-lg-down"><strong>Credit Bureau Search</strong></div>
+                        <div class="brand-text brand-small"><strong>CRMS</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                       
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="login.html" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch" style="background-color: white">
+        <!-- Side Navbar -->
+        <nav class="side-navbar" th:include="app::side-nav"></nav>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">Download Report</h2>
+                </div>
+            </header>
+            <!-- Forms Section-->
+            <section class="forms">
+                <div class="container-fluid" style="background-color: white">
+                    <div class="row">
+                        <!-- Basic Form-->
+                        <div class="col-lg-6 col-centered">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">Request Download</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>All fields are required</p>
+                                    <form method="post" action="">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                        <label class="form-control-label">Start Date</label>
+                                                        <input type="text" name="startDate" id="start-date" placeholder="Start Date" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                        <label class="form-control-label">End Date</label>
+                                                        <input type="text" name="endDate" id="end-date" placeholder="End Date" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label class="form-control-label">CRMS type</label>
+                                                    <select id="crms-type" name="crmsType" class="form-control">
+                                                        <option value="" th:text="select" ></option>
+                                                        <option th:each="crmsType : ${crmsTypes}" th:value="${crmsType}" th:text="${crmsType.fullName}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="submit" value="Download" class="btn btn-primary">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+            <footer class="main-footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p>Your company &copy; 2017-2019</p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Bootstrapious</a></p>
+                            <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+<div th:include="app::footer-assets">
+    <div>Testing</div>
+</div>
+</body>
+</html>

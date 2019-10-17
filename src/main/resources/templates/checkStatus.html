@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head th:include="default::head ('Request List','ca-request-list')">
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+<th:block th:replace="default::header"></th:block>
+<div class="app-body">
+	<th:block th:replace="default::sidebar"></th:block>
+	<div class="main">
+		<div class="container-fluid mt-5">
+			<div class="animated fadeIn">
+				<div class="card">
+					<div class="card-header">
+						<strong>Requests</strong>
+					</div>
+
+					<!--<div id="crms-Request-Search" class="card-body">-->
+						<!--<div class="row">-->
+							<!--<div class="col-md-12">-->
+								<!--<div class="form-group row">-->
+									<!--<div class="col-md-3">-->
+										<!--<label>Account Number</label><span>*</span>-->
+										<!--<input  type="text"-->
+												<!--class="form-control accountNo"-->
+												<!--required/>-->
+									<!--</div>-->
+
+									<!--<div class="col-md-4">-->
+										<!--<label>STATUS</label><span>*</span>-->
+										<!--<select class="form-control status" required>-->
+											<!--<option value="">-select-</option>-->
+
+											<!--<option VALUE="N">NEW REQUEST</option>-->
+											<!--<option VALUE="R">REJECTED</option>-->
+											<!--<option VALUE="U">UPDATED</option>-->
+										<!--</select>-->
+									<!--</div>-->
+
+
+
+
+									<!--<div class="col-md-3">-->
+										<!--<label>CRMS TYPE</label><span>*</span>-->
+										<!--<select class="form-control crmsType"-->
+												<!--required>-->
+											<!--<option value="">-select-</option>-->
+
+											<!--<option value="CRMS100">CRMS 100</option>-->
+											<!--<option value="CRMS200">CRMS 200</option>-->
+											<!--<option value="CRMS300">CRMS 300</option>-->
+											<!--<option value="CRMS400A">CRMS 400A</option>-->
+											<!--<option value="CRMS400B">CRMS 400B</option>-->
+										<!--</select>-->
+									<!--</div>-->
+
+									<!--<div class="col-md-2">-->
+										<!--<label></label><span></span>-->
+										<!--<button class="form-control custom-search-btn" type="button" style="background-color: darkred" ><font style="color: white"> Search</font></button>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+
+					<div class="card-body">
+						<input type="hidden" th:value="${type}" id="mod-type">
+						<input type="hidden" th:value="${acc}" id="mod-accNo">
+						<table id="credit-admin-request-table" class="table table-striped table-bordered" style="border-collapse: collapse !important">
+							<thead>
+							<tr>
+								<th class="no-wrap">Request Ref</th>
+								<th class="no-wrap">Credit Ref No</th>
+								<th class="no-wrap">Borrower Name</th>
+								<th class="no-wrap">Account Number</th>
+								<th class="no-wrap">CRMS Type</th>
+								<th class="no-wrap">Date Initiated</th>
+								<th class="no-wrap">Initiated By</th>
+								<th class="no-wrap">Status</th>
+								<th class="no-wrap">Action</th>
+							</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				<div id="crms-detail-modal-view" class="modal" tabindex="-1" role="dialog">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Crms Detail</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-lg-11 mx-auto">
+											<table class="table table-striped info-table">
+											</table>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+					<input type="hidden" id="selected-row-val" value=""/>
+					<input type="hidden" id="selected-row-id" value=""/>
+				</div>
+				<div id="crn-update-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-primary" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Update CRN for <span class="identifier"></span></h4>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="form-group row">
+									<div class="col-lg-12">
+										<input type="text" class="form-control crn-input-field" placeholder="Enter Credit Reference Number">
+										<input type="hidden" class="form-control id-field">
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary save-crn-btn">Save</button>
+								<button type="button" class="btn btn-danger confirm-save-crn-btn" style="display: none;">Click to Confirm</button>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				
+				
+				<div id="roll-over-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-primary" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Roll Over For <span class="identifier"></span></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                       
+                                        <input type="hidden" class="form-control id-field">
+                                    </div>
+                       
+                                </div>
+                                
+                              <div class="form-group row">  
+                             <div class="col-lg-12">
+                            <div class="row">
+
+
+                                <div class="col-lg-4">
+                                    <label>Tenor</label> <input
+                                        
+                                        id="outstandingAmount" type="text" name="rollOverTenor"
+                                        class="form-control roll-over-tenor"
+                                        required/>
+                                </div>
+
+
+                                <div class="col-lg-4 ">
+                                    <label>Effective Date</label> <input
+                                        
+                                        class="form-control roll-over-start-date datepicker"
+                                        data-provide="datepicker"
+                                        placeholder="MM/DD/YYY" name="rollOverEffectiveDate"
+                                        required/>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Expiry Date</label> <input
+                                        
+                                        class="form-control roll-over-end-date datepicker"
+                                        data-provide="datepicker"
+                                        placeholder="MM/DD/YYY" name="rollOverExpiryDate"
+                                        required/>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary roll-over-save-btn">save</button>
+                                <button type="button" class="btn btn-danger confirm-reject-request-btn" style="display: none;">Click to Confirm</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+				
+				
+				<div id="request-reject-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-primary" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Reject request <span class="identifier"></span></h4>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="form-group row">
+									<div class="col-lg-12">
+										<textarea class="form-control request-reject-reason" placeholder="Reject Reason"></textarea>
+										<input type="hidden" class="form-control id-field">
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary request-reject-btn">Reject</button>
+								<button type="button" class="btn btn-danger confirm-reject-request-btn" style="display: none;">Click to Confirm</button>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<th:block th:include="default::footer-files ('i-check-status')"></th:block>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="CoreUI PRO Bootstrap 4 Admin Template">
+    <meta name="author" content="Lukasz Holeczek">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="keyword" content="CoreUI PRO Bootstrap 4 Admin Template">
+    <title>www.lcma.com</title>
+    <link rel="icon" th:href="@{/assets/img/lambtonlogo.png}" type="image/png">
+    <link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/simple-line-icons.min.css}" rel="stylesheet">
+    <link href="css/style.css" th:href="@{/assets/css/style.css}" rel="stylesheet">
+    <link href="css/style.css" th:href="@{/assets/css/custom.css}" rel="stylesheet">
+</head>
+
+<body class="app flex-row align-items-center ">
+<div class="container ">
+    <div class="row justify-content-center ">
+        <div class="col-md-8 ">
+            <div class="card-group mb-0 ">
+                <div class="card p-4">
+                    <div class="card-body ">
+                        <h1>Login</h1>
+                        <p class="text-muted">Enter Email and Password to login</p>
+                        <form action="#" th:action="@{/login}" method="post">
+                            <div class="input-group mb-3">
+                                <span class="input-group-addon"><i class="icon-user"></i></span>
+                                <input type="text" name="username" class="form-control" placeholder="Username">
+                            </div>
+                            <div class="input-group mb-4">
+                                <span class="input-group-addon"><i class="icon-lock"></i></span>
+                                <input type="password" name="password" class="form-control" placeholder="Password">
+                            </div>
+                            <div class="row">
+                                <div  class="col-6">
+                                    <button style="background-color: royalblue" type="submit" class="btn btn-primary px-4">Login</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div th:if="${param.error}">
+                        <label></label>
+                        <font color="red">Invalid username and password.</font>
+                    </div>
+                </div>
+                <div  class="card text-white py-5 d-md-down-none" style="width:44%; background-color: #001a66; ">
+                    <div  class="card-body text-center" >
+                        <div >
+                            <h2>Lambton College Mobile Application Admin</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendors/js/jquery.min.js" th:src="@{/assets/js/jquery.min.js}"></script>
+<script src="vendors/js/popper.min.js" th:src="@{/assets/js/popper.min.js}"></script>
+<script src="vendors/js/bootstrap.min.js" th:src="@{/assets/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

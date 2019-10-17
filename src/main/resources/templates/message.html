@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head th:include="default::head ('Message', 'message')">
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+<th:block th:replace="default::header"></th:block>
+<div class="app-body">
+    <th:block th:replace="default::sidebar"></th:block>
+    <div class="main">
+        <div class="row">
+            <div class="col-lg-6 mx-auto mt-5">
+                <div class="card">
+                    <div class="card-header">
+                        <strong th:text="${messageType}">Message</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body text-center" th:text="${message}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="app::footer-files"></div>
+</body>
+</html>

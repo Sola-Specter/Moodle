@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head th:include="app::head ('Populate')">
+</head>
+<body>
+<div class="page home-page">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar" style="background-color: #d61a0c ">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss">
+                    <i class="icon-close"></i>
+                </button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..."
+                           class="form-control" />
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div
+                        class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand -->
+                        <a href="index.html" class="navbar-brand">
+                            <div class="brand-text brand-big hidden-lg-down">
+                                <strong><span>Credit Bureau Search </span></strong>
+                            </div>
+                            <div class="brand-text brand-small">
+                                <strong>CRMS</strong>
+                            </div>
+                        </a>
+                        <!-- Toggle Button-->
+                        <a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul
+                            class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <li class="nav-item"><a href="login.html"
+                                                class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch" style="background-color: white">
+        <!-- Side Navbar -->
+        <nav class="side-navbar" th:include="app::side-nav"></nav>
+        <div class="col-lg-9" style="margin: auto; ">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">Populate Customer Data</h2>
+                </div>
+            </header>
+            <div th:replace="crmsFormFragment::${crmsType}"></div>
+            <!-- Page Footer-->
+            <footer class="main-footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p>Your company &copy; 2017-2019</p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <p>
+                                Design by <a href="https://bootstrapious.com/admin-templates"
+                                             class="external">Bootstrapious</a>
+                            </p>
+                            <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+<!-- Javascript files-->
+<div th:include="app::footer-assets"></div>
+<script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/js/jquery.validate.min.js}"></script>
+<script th:src="@{/js/additional-methods.min.js}"></script>
+<script th:src="@{/js/initiator.js}"></script>
+<script>
+  $('.datepicker').datepicker({
+
+    minView: 2,
+    pickTime: false,
+    dateFormat: 'mm/dd/yyyy',
+    todayHighlight: true,
+    autoclose: true
+  });
+</script>
+</body>
+</html>

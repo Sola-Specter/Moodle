@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head th:include="default::head ('New Request', 'new-request')">
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+<th:block th:replace="default::header"></th:block>
+<div class="app-body">
+    <th:block th:replace="default::sidebar"></th:block>
+    <div class="main">
+        <div class="row">
+            <div class="col-sm-4 mx-auto mt-5">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>New Request</strong>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/initiator/newRequest}" th:object="${requestValue}" method="post" class="form-horizontal">
+                            <div class="form-group row">
+                                <div class="col-lg-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input type="text" id="start-date" th:field="*{accountNumber}" class="form-control" placeholder="Account Number">
+                                    </div>
+                                    <small class="form-text text-muted" th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}">Account Number Error</small>
+                                </div>
+                            </div>
+                            <div id="customerType" class="form-group row">
+                                <div class="col-lg-12">
+                                    <select th:field="*{customerType}" class="form-control">
+                                        <option value="">Select Customer Type</option>
+                                        <option value="I">Individual</option>
+                                        <option value="C">Corporate</option>
+                                        <option value="F">Federal Govt.</option>
+                                        <option value="S">State Govt.</option>
+                                        <option value="L">Local Govt.</option>
+                                        <option value="RE" class="restructureRoll">Restructure Existing/Roll Over</option>  -->
+                                        <!-- <option value="Roll Over">Roll Over</option> -->
+                                        <option value="M">MDAs</option>
+                                    </select>
+                                    <small th:if="${#fields.hasErrors('customerType')}" th:errors="*{customerType}">Customer Type Error</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-1">
+                                    <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="default::footer-files ('new-request')"></th:block>
+</body>
+</html>

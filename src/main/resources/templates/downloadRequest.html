@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head th:include="default::head ('Download Request','download-request')">
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    <th:block th:replace="default::header"></th:block>
+    <div class="app-body">
+        <th:block th:replace="default::sidebar"></th:block>
+        <div class="main">
+            <div class="row">
+                <div class="col-sm-4 mx-auto mt-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Download Requests</strong>
+                        </div>
+                        <div class="card-body">
+                            <form class="form-horizontal"  method="post" action="">
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                            <input type="text" id="start-date" name="startDate" class="form-control" placeholder="Start Date">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                            <input type="text" id="end-date" name="endDate" class="form-control" placeholder="End Date">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <select id="crms-type" name="crmsType" class="form-control">
+                                            <option value="">Select CRMS Type</option>
+                                            <option th:each="crmsType : ${crmsTypes}" th:value="${crmsType}" th:text="${crmsType.fullName}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-1">
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Download</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="default::footer-files ('download-request')"></th:block>
+        <div>Testing</div>
+    </div>
+</body>
+</html>

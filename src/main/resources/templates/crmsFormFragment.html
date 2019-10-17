@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="F">
+    <th:block th:replace="crmsFormFragment::crms100"></th:block>
+</div>
+<div th:fragment="S">
+    <th:block th:replace="crmsFormFragment::crms100"></th:block>
+</div>
+<div th:fragment="L">
+    <th:block th:replace="crmsFormFragment::crms100"></th:block>
+</div>
+
+<div th:fragment="M">
+    <th:block th:replace="crmsFormFragment::crms200"></th:block>
+</div>
+
+<div th:fragment="C">
+    <th:block th:replace="crmsFormFragment::crms300"></th:block>
+</div>
+<div th:fragment="I">
+    <th:block th:replace="crmsFormFragment::crms300"></th:block>
+</div>
+
+<th:block th:fragment="crms100">
+    <form action="#" id="crms-form" th:action="@{/initiator/submitRequest}"
+          th:object="${crmsInfo}" method="post">
+        <input type="hidden" th:field="*{crmsType}"/>
+        <input type="hidden" th:field="*{origId}"/>
+        <input type="hidden" th:field="*{accountNo}" />
+        <input type="hidden" id="businessline-cat-ref" th:value="${creditPurpose[0].ref}">
+        <input type="hidden" id="govt-code-ref" th:value="${govtCodes[0].ref}">
+
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Basic Information</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Government Code</label><span>*</span>
+                                        <select th:field="*{govtCode}"
+                                                id="govtCode" class="form-control"
+                                                required>
+                                            <th:block th:switch="${crmsType}">
+                                                <th:block th:case="F">
+                                                    <th:block th:each="govtCode: ${govtCodes}">
+                                                        <th:block th:if="${govtCode.id == 55}">
+                                                            <option th:value="${govtCode.crms}" selected
+                                                                    th:text="${govtCode.description}"></option>
+                                                        </th:block>
+                                                    </th:block>
+                                                </th:block>
+                                                <th:block th:case="*">
+                                                    <option value=""
+                                                            th:text="-select-"></option>
+                                                    <option th:each="govtCode : ${govtCodes}"
+                                                            th:value="${govtCode.crms}"
+                                                            th:text="${govtCode.description}"></option>
+                                                </th:block>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <th:block th:if="${crmsType == 'L'}">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label>LGA Code</label><span>*</span>
+                                            <select class="form-control"
+                                                    id="lgaCode" name="lgaCode" required>
+                                                <option value="">-select-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Credit Type</label><span>*</span>
+                                        <select th:field="*{creditType}"
+                                                class="form-control"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${creditType}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Legal Status</label><span>*</span>
+                                        <select th:field="*{legalStatus}"
+                                                class="form-control"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${legalStatus}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Credit Purpose By Business Lines</label><span>*</span>
+                                        <select th:field="*{creditPurposeBusinessLine}"
+                                                class="form-control business-lines"
+                                                id="creditPurposeBline"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${creditPurpose}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Business Line Sub-Sector</label><span>*</span>
+                                        <select
+                                                th:field="*{creditPurposeBLineSubSector}"
+                                                class="form-control subsector"
+                                                required id="creditPurposeBlineSubsector">
+                                            <option value="">-select-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <th:block th:if="*{crmsType == T(com.ubagroup.crmsapplication.domain.CrmsType).CRMS400B}">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label for="perfRepaymentStatus">Performance Repayment
+                                                Status</label><span>*</span>
+                                            <select id="perfRepaymentStatus"
+                                                    style="width: 100%" required
+                                                    rows="5"
+                                                    th:field="*{perfRepaymentStatus}">
+                                                <option value="">-select-</option>
+                                                <option th:each="var : ${perfRepaymentStatus}"
+                                                        th:value="${var.crms}"
+                                                        th:text="${var.description}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Fee Detail</strong></div>
+                    <div class="card-body">
+                        <div id="fee-details-wrapper">
+                            <div class="form-group row fee-detail-form">
+                                <div class="col-lg-6">
+                                    <label>Fee Type</label><span>*</span>
+                                    <select class="form-control" name="feetype1" required>
+                                        <option value="">-select-</option>
+                                        <option th:each="var : ${feeType}"
+                                                th:value="${var.crms}"
+                                                th:text="${var.description}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>Fee Amount</label><span>*</span>
+                                    <input
+                                            type="text" name="feeAmount1"
+                                            class="form-control"
+                                            required/>
+                                </div>
+                                <span class="remove-fee-detail-form-btn" style="display: none">
+                                    <i class="fa fa-times" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="hidden" id="fee-detail" th:field="*{feeDetail}">
+                            <div class="form-group row">
+                                <div class="col-lg-2">
+                                    <input type="button" id="add-fee-btn" value="Add"
+                                           class=" btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Loan Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Currency</label><span>*</span>
+                                        <select th:field="*{currency}" class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="NGN">NGN</option>
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Loan Amount</label><span>*</span>
+                                        <input
+                                                th:field="*{creditLimit}"
+                                                type="text" id="amount"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Outstanding Amount</label><span>*</span>
+                                        <input
+                                                th:field="*{outstandingAmount}"
+                                                id="outstandingAmount" type="text"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Effective Date</label><span>*</span>
+                                        <input
+                                                th:field="*{effectiveDate}"
+                                                id="effectiveDate"
+                                                class="form-control datepicker"
+                                                data-provide=""
+                                                placeholder="MM/DD/YYY"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Expiry Date</label><span>*</span>
+                                        <input
+                                                th:field="*{expiryDate}"
+                                                id="expiryDate"
+                                                class="form-control datepicker"
+                                                data-provide="datepicker"
+                                                placeholder="MM/DD/YYY"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Tenor (in months)</label><span>*</span>
+                                        <input
+                                                th:field="*{tenor}"
+                                                type="text" id="tenor"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Interest Rate</label><span>*</span>
+                                        <input
+                                                th:field="*{interestRate}" type="text"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Collateral Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Collateral Present</label><span>*</span>
+                                        <select
+                                                th:field="*{collateralPresent}"
+                                                id="colPresent"
+                                                class="form-control"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Collateral Secure</label>
+                                        <select
+                                                th:field="*{collateralSecure}"
+                                                id="colSecure"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Security Type</label>
+                                        <select
+                                                th:field="*{securityType}"
+                                                id="securityType"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${securityType}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Repayment Agreement Mode</label><span>*</span>
+                                        <select th:field="*{repaymentAgreementMode}"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${repaymentMode}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Repayment Source (Hold Ctrl to select multiple
+                                            values)</label><span>*</span>
+                                        <select id="repayment-source-select"
+                                                name="repaymentSourceSelect"
+                                                multiple class="form-control"
+                                                required>
+                                            <option th:each="var : ${repaymentSource}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                        <input type="hidden" th:field="*{repaymentSource}" id="repayment-source">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Other Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Syndication</label><span>*</span>
+                                        <select
+                                                th:field="*{syndication}" required
+                                                id="syndication" class="form-control">
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Syndication Status</label>
+                                        <select
+                                                th:field="*{syndicationStatus}"
+                                                id="syndicationStatus"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="LEAD">LEAD</option>
+                                            <option value="TEAM MEMBER">TEAM MEMBER</option>
+                                            <option value="NIL">NIL</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Syndication Reference No.</label>
+                                        <input th:field="*{syndicationRefNo}"
+                                               type="text" class="form-control"
+                                               id="syndicationRefNo" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Specialized Loan</label><span>*</span>
+                                        <select
+                                                th:field="*{specializedLoan}"
+                                                id="specializedLoan" required
+                                                class="form-control">
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Specialized Loan Period (in months)</label>
+                                        <input
+                                                th:field="*{specializedLoanPeriod}"
+                                                type="text" class="form-control"
+                                                id="specializedLoanPeriod" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <th:block th:if="*{crmsType == T(com.ubagroup.crmsapplication.domain.CrmsType).CRMS400B}">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label for="restructureReason">Restructure Reason</label><span>*</span>
+                                            <textarea id="restructureReason"
+                                                      style="width: 100%" required
+                                                      rows="5"
+                                                      th:field="*{restructureReason}">
+                                                </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="form-group row">
+                    <div class="col-lg-2">
+                        <input type="submit" id="crms-submit-btn" value="Submit"
+                               class="btn btn-primary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+<th:block th:fragment="crms200">
+    <form action="#" id="crms-form" th:action="@{/admin/submitRequest}"
+          th:object="${users}" method="post">
+
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card modal-content " style="border-style:solid; border-color: black">
+                    <div class="card-header cards-header-design" ><strong >User Information</strong></div>
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label><strong>First Name</strong></label><span>*</span>
+                                        <input  type="text"
+                                               name="firstname" class="form-control"
+                                               required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label><strong>Last Name</strong></label><span>*</span>
+                                        <input type="text"
+                                               name="lastname"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label><strong>Middle Name</strong></label><span>*</span>
+                                        <input  type="text"
+                                                class="form-control"
+                                                name="middlename"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label><strong>Email Address</strong></label><span>*</span>
+                                        <input  type="text"
+                                                class="form-control"
+                                                name="email"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label><strong>Status</strong></label><span>*</span>
+                                        <select
+                                                name="role"
+                                                id="role"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                            <option value="GENERAL">GENERAL</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label><strong>Department</strong></label><span>*</span>
+                                        <input  type="text"
+                                                name="department"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="form-group row">
+                    <div class="col-lg-2">
+                        <input style="background-color: royalblue" type="submit" id="crms-submit-btn" value="Submit"
+                               class="btn btn-primary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</th:block>
+<th:block th:fragment="crms300">
+    <form action="#" id="crms-form" th:action="@{/initiator/submitRequest}"
+          th:object="${crmsInfo}" method="post">
+
+        <input type="hidden" th:field="*{crmsType}"/>
+        <input type="hidden" th:field="*{origId}"/>
+        <input type="hidden" th:field="*{accountNo}" id="accountNo"/>
+        <input type="hidden" id="businessline-cat-ref" th:value="${creditPurpose[0].ref}">
+
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Basic Information</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Identification Type</label><span>*</span>
+                                        <select th:field="*{uniqueIdType}" id="uniqueIdType" class="form-control"
+                                                required>
+                                            <th:block th:switch="${crmsType}">
+                                                <th:block th:case="I">
+                                                    <option value="BVN">BVN</option>
+                                                </th:block>
+                                                <th:block th:case="C">
+                                                    <option value="">-select-</option>
+                                                    <option value="TIN">TIN</option>
+                                                    <option value="BVN">BVN</option>
+                                                </th:block>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Identification Number</label><span>*</span>
+                                        <input th:field="*{uniqueIdNo}" type="text" id="uniqueIdNo" class="form-control"
+                                               required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Credit Type</label><span>*</span>
+                                        <select th:field="*{creditType}"
+                                                class="form-control"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${creditType}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Legal Status</label><span>*</span>
+                                        <select th:field="*{legalStatus}"
+                                                class="form-control"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${legalStatus}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Credit Purpose By Business Lines</label><span>*</span>
+                                        <select th:field="*{creditPurposeBusinessLine}"
+                                                class="form-control business-lines"
+                                                id="creditPurposeBline"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${creditPurpose}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Business Line Sub-Sector</label><span>*</span>
+                                        <select
+                                                th:field="*{creditPurposeBLineSubSector}"
+                                                class="form-control subsector"
+                                                required id="creditPurposeBlineSubsector">
+                                            <option value="">-select-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Loan Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Currency</label><span>*</span>
+                                        <select th:field="*{currency}" class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="NGN">NGN</option>
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Loan Amount</label><span>*</span>
+                                        <input
+                                                th:field="*{creditLimit}"
+                                                type="text" id="amount"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Outstanding Amount</label><span>*</span>
+                                        <input
+                                                th:field="*{outstandingAmount}"
+                                                id="outstandingAmount" type="text"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Effective Date</label><span>*</span>
+                                        <input
+                                                th:field="*{effectiveDate}"
+                                                class="form-control datepicker"
+                                                data-provide="datepicker"
+                                                placeholder="MM/DD/YYY"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Expiry Date</label><span>*</span>
+                                        <input
+                                                th:field="*{expiryDate}"
+                                                class="form-control datepicker"
+                                                data-provide="datepicker"
+                                                placeholder="MM/DD/YYY"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Tenor (in months)</label><span>*</span>
+                                        <input
+                                                th:field="*{tenor}"
+                                                type="text" id="tenor"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Interest Rate</label><span>*</span>
+                                        <input
+                                                th:field="*{interestRate}" type="text"
+                                                class="form-control"
+                                                required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Fee Detail</strong></div>
+                    <div class="card-body">
+                        <div id="fee-details-wrapper">
+                            <div class="form-group row fee-detail-form">
+                                <div class="col-lg-6">
+                                    <label>Fee Type</label><span>*</span>
+                                    <select class="form-control" name="feetype1" required>
+                                        <option value="">-select-</option>
+                                        <option th:each="var : ${feeType}"
+                                                th:value="${var.crms}"
+                                                th:text="${var.description}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>Fee Amount</label><span>*</span>
+                                    <input
+                                            type="text" name="feeAmount1"
+                                            class="form-control"
+                                            required/>
+                                </div>
+                                <span class="remove-fee-detail-form-btn" style="display: none">
+                                    <i class="fa fa-times" aria-hidden="true"></i></span>
+                            </div>
+                            <input type="hidden" id="fee-detail" th:field="*{feeDetail}">
+                            <div class="form-group row">
+                                <div class="col-lg-2">
+                                    <input type="button" id="add-fee-btn" value="Add"
+                                           class=" btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Beneficiary Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Beneficiary Account Number</label><span>*</span>
+                                        <input required th:field="*{beneAccountNo}" id="accountNumber" type="text"
+                                               class="form-control account" name="accountNumber"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Location of Beneficiary</label><span>*</span>
+                                        <select required th:field="*{locationOfbene}" id="locationOfBene"
+                                                class="form-control">
+                                            <option value="" th:text="-select-"></option>
+                                            <option th:each="var : ${location}" th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Relationship Type</label><span>*</span>
+                                        <select required th:field="*{relationshipType}" class="form-control">
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${relType}" th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Company Size</label>
+                                        <select th:field="*{companySize}" class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${companySize}" th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Funding Source Category</label><span>*</span>
+                                        <select required th:field="*{fundingSourceCategory}" class="form-control">
+                                            <option value="">-select-</option>
+                                            <option value="FCY">FCY</option>
+                                            <option value="LCY">LCY</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Funding Source</label><span>*</span>
+                                        <select required th:field="*{fundingSource}" class="form-control">
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${fundingSource}" th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Classification by Business Line</label><span>*</span>
+                                        <select th:field="*{classByBusinessLine}" class="form-control business-lines"
+                                                id="clssfcationBline" required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${blineClass}" th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Classification by Business Line sub sector</label><span>*</span>
+                                        <select th:field="*{classByBLineSubSector}" class="form-control"
+                                                id="classBlineSubsector" required>
+                                            <option value="">-select-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Collateral Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Collateral Present</label><span>*</span>
+                                        <select
+                                                th:field="*{collateralPresent}"
+                                                id="colPresent"
+                                                class="form-control"
+                                                required>
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Collateral Secure</label>
+                                        <select
+                                                th:field="*{collateralSecure}"
+                                                id="colSecure"
+                                                class="form-control"required>
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Security Type</label>
+                                        <select
+                                                th:field="*{securityType}"
+                                                id="securityType"
+                                                class="form-control" required >
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${securityType}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Owner of Security</label>
+                                        <input th:field="*{ownerOfSecurity}" id="ownerOfSecurity" type="text"
+                                               class="form-control" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Address of Security</label>
+                                        <input th:field="*{addressOfSecurity}" id="addressOfSecurity" type="text"
+                                               class="form-control" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Unique Identification Type of Security Owner</label>
+                                        <select th:field="*{idTypeOfSecurityOwner}" id="idTypeOfSecurityOwner"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="BVN">BVN</option>
+                                            <option value="TIN">TIN</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Unique Identifier of Security Owner</label>
+                                        <input th:field="*{idOfSecurityOwner}" type="text" id="idOfSecurityOwner"
+                                               class="form-control" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Repayment Agreement Mode</label><span>*</span>
+                                        <select th:field="*{repaymentAgreementMode}"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option th:each="var : ${repaymentMode}"
+                                                    th:value="${var.crms}"
+                                                    th:text="${var.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Guarantor's Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Guarantee</label><span>*</span>
+                                        <select th:field="*{guarantee}" id="guarantee" class="form-control"
+                                                required="required">
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Guarantee Type</label>
+                                        <select th:field="*{guaranteeType}" id="guaranteeType" class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="Individual">Individual</option>
+                                            <option value="Non-Individual">Non-Individual</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Guarantor Unique Identification Type</label>
+                                        <select th:field="*{guarantorIdType}" id="guarantorIdType" class="form-control" required>
+                                            <!--<option value="">-select-</option>-->
+                                            <!--<option value="BVN">BVN</option>-->
+                                            <!--<option value="TIN">TIN</option>-->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Guarantor Unique Id</label>
+                                        <input th:field="*{guarantorId}" id="guarantorId" type="text" placeholder=""
+                                               class="form-control" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Amount Guaranteed</label>
+                                        <input th:field="*{amountGuaranteed}" type="text" id="amountGuaranteed"
+                                               class="form-control" required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Director(s) Information</strong></div>
+                    <div class="card-body">
+                        <div id="director-form-wrapper">
+                            <div class="form-group row director-form">
+                                <div class="col-lg-4">
+                                    <label>Director ID Type</label><span>*</span>
+                                    <select required class="form-control id-type" id="dirIdType" name="dirIdType1">
+                                        <option value=""></option>
+                                        <option value="BVN">BVN</option>
+                                        <option value="TIN">TIN</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Director ID No.</label><span>*</span>
+                                    <input required type="text" id="dirIdNo" name="dirIdNo1" class="form-control id-no"/>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Director Email</label><span>*</span>
+                                    <input type="text" name="emailAdd1" id="emailAdd" class="form-control emailAdd" required/>
+                                    <span class="remove-director-form-btn" style="display: none">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <th:block th:if="${crmsType == 'C'}">
+                                <div class="form-group row">
+                                    <div class="col-lg-1">
+                                        <input type="button" id="add-director-btn" name="dirEmail1" value="Add"
+                                               class=" btn btn-primary"/>
+                                    </div>
+                                </div>
+                            </th:block>
+                            <input type="hidden" th:field="*{directorDetail}" id="directorsDetail">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header"><strong>Other Detail</strong></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Syndication</label><span>*</span>
+                                        <select
+                                                th:field="*{syndication}" required
+                                                id="syndication" class="form-control">
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Syndication Status</label>
+                                        <select
+                                                th:field="*{syndicationStatus}"
+                                                id="syndicationStatus"
+                                                class="form-control" required>
+                                            <option value="">-select-</option>
+                                            <option value="LEAD">LEAD</option>
+                                            <option value="TEAM MEMBER">TEAM MEMBER</option>
+                                            <option value="NIL">NIL</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Syndication Reference No.</label>
+                                        <input th:field="*{syndicationRefNo}"
+                                               type="text" class="form-control"
+                                               id="syndicationRefNo" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Specialized Loan</label><span>*</span>
+                                        <select
+                                                th:field="*{specializedLoan}"
+                                                id="specializedLoan" required
+                                                class="form-control">
+                                            <option value="">-select-</option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Specialized Loan Period (in months)</label>
+                                        <input
+                                                th:field="*{specializedLoanPeriod}"
+                                                type="text" class="form-control"
+                                                id="specializedLoanPeriod" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <th:block th:if="*{crmsType == T(com.ubagroup.crmsapplication.domain.CrmsType).CRMS400B}">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label for="restructureReason">Restructure Reason</label><span>*</span>
+                                            <textarea id="restructureReason"
+                                                      style="width: 100%" required
+                                                      rows="5"
+                                                      th:field="*{restructureReason}">
+                                                </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                            <th:block th:if="*{crmsType == T(com.ubagroup.crmsapplication.domain.CrmsType).CRMS400B}">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label for="perfRepaymentStatus">Performance Repayment
+                                                Status</label><span>*</span>
+                                            <select id="perfRepaymentStatus"
+                                                    style="width: 100%" required
+                                                    rows="5"
+                                                    th:field="*{perfRepaymentStatus}">
+                                                <option value="">-select-</option>
+                                                <option th:each="var : ${perfRepaymentStatus}"
+                                                        th:value="${var.crms}"
+                                                        th:text="${var.description}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="form-group row">
+                    <div class="col-lg-2">
+                        <input type="submit" id="crms-submit-btn" value="Submit"
+                               class="btn btn-primary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head th:include="default::head ('Crms Form', 'crms-form')">
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+<th:block th:replace="default::header"></th:block>
+<div class="app-body">
+    <th:block th:replace="default::sidebar"></th:block>
+    <div class="main">
+        <div class="container-fluid mt-5" >
+            <div class="animated-fadeIn">
+                <div class="card modal-content" style="border-style: solid; border-color: black;">
+                    <div class="card-header cards-header-design" >
+                        <strong> Create User</strong>
+                    </div>
+                    <div class="card-body text-center " ><strong th:text="${message}"></strong></div>
+
+                    <div class="card-body ">
+                        <div th:replace="crmsFormFragment::crms200"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="default::footer-files ('crms-form')"></th:block>
+<!-- Javascript files-->
+<!--<div th:include="app::footer-assets"></div>-->
+<!--<script th:src="@{/js/bootstrap-datepicker.min.js}"></script>-->
+<!--<script th:src="@{/js/jquery.validate.min.js}"></script>-->
+<!--<script th:src="@{/js/additional-methods.min.js}"></script>-->
+<!--<script th:src="@{/js/initiator.js}"></script>-->
+<script>
+//  $('.datepicker').datepicker({
+//
+//    minView: 2,
+//    pickTime: false,
+//    dateFormat: 'mm/dd/yyyy',
+//    todayHighlight: true,
+//    autoclose: true
+//  });
+</script>
+</body>
+</html>

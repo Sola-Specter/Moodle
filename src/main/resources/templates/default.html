@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head (title,currPage)">
+    <meta charset="UTF-8">
+    <title th:text="'www.lcma.com' + ${title}"></title>
+    <link rel="icon" th:href="@{/assets/img/lambtonlogo.png}" type="image/png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="vendors/css/font-awesome.min.css" th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet">
+    <link href="vendors/css/simple-line-icons.min.css" th:href="@{/assets/css/simple-line-icons.min.css}" rel="stylesheet">
+    <link href="vendors/css/gauge.min.css" th:href="@{/assets/css/guage.min.css}" rel="stylesheet">
+    <th:block th:if="${currPage} == 'download-request'">
+        <link href="vendors/css/daterangepicker.min.css" th:href="@{/assets/css/daterangepicker.min.css}" rel="stylesheet">
+        <link href="vendors/css/toastr.min.css" th:href="@{/assets/css/toastr.min.css}" rel="stylesheet">
+    </th:block>
+    <th:block th:if="${currPage} == 'ca-request-list'">
+        <link href="vendors/css/dataTables.bootstrap4.min.css" th:href="@{/assets/css/dataTables.bootstrap4.min.css}" rel="stylesheet">
+    </th:block>
+    <link href="css/style.css" th:href="@{/assets/css/style.css}" rel="stylesheet">
+    <link href="css/style.css" th:href="@{/assets/css/custom.css}" rel="stylesheet">
+</head>
+<body>
+<th:block th:fragment="footer-files (currPage)">
+    <script src="vendors/js/jquery.min.js" th:src="@{/assets/js/jquery.min.js}"></script>
+    <script src="vendors/js/popper.min.js" th:src="@{/assets/js/popper.min.js}"></script>
+    <script src="vendors/js/bootstrap.min.js" th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <script src="vendors/js/pace.min.js" th:src="@{/assets/js/pace.min.js}"></script>
+    <script src="vendors/js/moment.min.js" th:src="@{/assets/js/moment.min.js}"></script>
+    <script src="vendors/js/daterangepicker.min.js" th:src="@{/assets/js/daterangepicker.min.js}"></script>
+    <script src="vendors/js/jquery.dataTables.min.js" th:src="@{/assets/js/jquery.dataTables.min.js}"></script>
+    <script src="vendors/js/dataTables.bootstrap4.min.js" th:src="@{/assets/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/assets/js/jquery.validate.min.js}"></script>
+    <script th:src="@{/assets/js/moment.min.js}"></script>
+        <script th:src="@{/assets/js/additional-methods.min.js}"></script>
+    <script th:src="@{/assets/js/common.js}"></script>
+
+    <th:block th:if="${currPage} == 'download-request'">
+        <script src="vendors/js/gauge.min.js" th:src="@{/assets/js/guage.min.js}"></script>
+        <script src="vendors/js/toastr.min.js" th:src="@{/assets/js/toastr.min.js}"></script>
+        <script src="vendors/js/app.js" th:src="@{/assets/js/creditAdmin.js}"></script>
+    </th:block>
+    <th:block th:if="${currPage} == 'ca-request-list'">
+        <script src="vendors/js/app.js" th:src="@{/assets/js/creditAdmin.js}"></script>
+    </th:block>
+    <th:block th:if="${currPage} == 'crms-form'">
+        <script th:src="@{/assets/js/initiator.js}"></script>
+        <script th:src="@{/assets/js/customRules.js}"></script>
+    </th:block>
+    <th:block th:if="${currPage} == 'i-check-status'">
+        <script th:src="@{/assets/js/initiator.js}"></script>
+        <script th:src="@{/assets/js/customRules.js}"></script>
+    </th:block>
+</th:block>
+<th:block th:fragment="header">
+    <header class="app-header navbar crms-header " style="background-color: #001a66;">
+        <!--<button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">☰</button>-->
+        <!--<button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">☰</button>-->
+
+        <li style="color: white; list-style-type: none; " >
+            <strong >&nbsp;&nbsp;<img src="/assets/img/lambtonlogo3.png" style="width: 50px; height: 50px"/>LAMBTON MOBILE APPLICATION ADMIN</strong>
+        </li>
+
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item">
+                <strong style="color: white"><th:block th:text=" ${@currentUserInfo.getFullname()}"></th:block> &nbsp;&nbsp;</strong>
+            </li>
+            <li class="nav-item">
+                <a id="main-logout" class="nav-link p-2" href="#" role="button">
+                    <font style="color: white; "> <strong>Logout</strong></font>
+                </a>
+            </li>
+        </ul>
+    </header>
+</th:block>
+<th:block th:fragment="sidebar">
+    <div class="sidebar sidebar-color">
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="javascript: return false"></a>
+                    </li>
+
+                    <li class="divider"></li>
+                    <th:block sec:authorize="hasAuthority('CREDIT_ADMIN')">
+                        <li class="nav-title">
+                            APPLICATION ADMIN
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="widgets.html" th:href="@{/}"><i class="icon-calculator"></i> Create User </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="charts.html" th:href="@{/admin/viewUsers}"><i class="icon-pie-chart"></i> View Users </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="charts.html" th:href="@{/creditAdmin/requestList}"><i class="icon-pie-chart"></i> Mobile App Features </a>
+                        </li>
+
+                        <li class="divider"></li>
+                    </th:block>
+                    <th:block sec:authorize="hasAuthority('GENERAL')">
+                        <li class="nav-title">
+                            GENERAL USER
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="widgets.html" th:href="@{/initiator/newRequest}"><i class="icon-calculator"></i> Post News </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="charts.html" th:href="@{/initiator/requestHistory}"><i class="icon-pie-chart"></i> View Feedbacks </a>
+                        </li>
+                    </th:block>
+
+                    <!--<li class="nav-item">-->
+                        <!--<a class="nav-link" href="charts.html" th:href="@{/config}"><i class="icon-pie-chart"></i> Configure </a>-->
+                    <!--</li>-->
+                </ul>
+            </nav>
+            <button class="sidebar-minimizer " type="button"></button>
+        </div>
+</th:block>
+</body>
+</html>
